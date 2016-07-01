@@ -16,30 +16,30 @@ var TOTAL_MOWING_HOURS_ENTITY_ID = new Entity("total_mowing_hours", "Total mowin
 var NO_OF_ALARMS_ENTITY_ID = new Entity("no_of_alarms", "No of alarms", "#");
 // var ALERT_ENTITY_ID = new Entity("Alert";
 var STATE_ENTITY_ID = new Entity("state", "State");
+var WORKING_TIME_PERCENT_ID = new Entity("working_time_percent", "Working time Percent", "%");
 
 
 function HomeAssistant(config) {
   this.homeAssistantUrl = config.homeAssistantUrl;
   this.homeAssistantPassword = config.homeAssistantPassword;
+  //console.log("pwd: " + this.homeAssistantPassword);
 }
 
 HomeAssistant.prototype.ajax = function (type, uri, data, callback) {
   var self = this;
 
   var url = self.homeAssistantUrl + "/api/" + (uri ? uri : "");
-  // console.log("About to '" + type + "' to '" + url + "'" + (data ? ": " + JSON.stringify(data) : ""));
-  
+  //console.log("About to '" + type + "' to '" + url + "'" + (data ? ": " + JSON.stringify(data) : ""));
+  //console.log("pwd: " + self.homeAssistantPassword);
+
   najax({
-    url: url,
+    url: url + "?api_password=" + self.homeAssistantPassword,
     type: type,
     data: data, // ? JSON.stringify(data) : null,
     contentType: "json", // will be "application/json" in version najax 0.2.0
     dataType: "json", // will be "application/json" in version najax 0.2.0
-    headers: {
-      "X-HA-Access": self.homeAssistantPassword
-    },
     success: function(response) {
-      // console.log("Response from HomeAssistant: " + JSON.stringify(response));
+      //console.log("Response from HomeAssistant: " + JSON.stringify(response));
       if(callback)
         callback(response);
     },
@@ -76,6 +76,11 @@ HomeAssistant.prototype.setNoOfAlarms = function(noOfAlarms) {
 
 HomeAssistant.prototype.setState = function (state) {
   this.postState(STATE_ENTITY_ID, state);
+};
+
+HomeAssistant.prototype.setWorkingTimePercent = function (workingTimePercent) {
+  if(typeof workingTimePercent != "undefined")
+    this.postState(WORKING_TIME_PERCENT_ID, workingTimePercent);
 };
 
 module.exports = HomeAssistant;

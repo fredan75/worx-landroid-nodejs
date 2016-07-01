@@ -16,11 +16,11 @@ landroid.pollEvery(60, function(status) { // Poll every 60 seconds
     homeAssistant.setNoOfAlarms(status.noOfAlarms);
     homeAssistant.setBatteryPercentage(status.batteryPercentage);
     homeAssistant.setTotalMowingHours(status.totalMowingHours);
-    homeAssistant.setState(status.state.toString());
+    homeAssistant.setWorkingTimePercent(status.workingTimePercent);
     
     switch (status.state) {
       case LandroidState.ALARM:
-        homeAssistant.setState(status.errorMessage ? status.errorMessage : "[Alarm]");
+        homeAssistant.setState(status.errorMessage ? "Alarm!" + status.errorMessage : "Alarm! - Unknown");
         break;
       case LandroidState.CHARGING:
         homeAssistant.setState("Charging");
@@ -45,7 +45,7 @@ landroid.pollEvery(60, function(status) { // Poll every 60 seconds
     }
   }
   else {
-    homeAssistant.setState("Error getting update!");
-    console.error("Error getting update!");
+    homeAssistant.setState("No Connection!");
+    console.error("No Connection!");
   }
 });
