@@ -42,4 +42,5 @@ If you plan to use [Domoticz home automation system](http://domoticz.com/), foll
 
 ## Worx Landroid REST API JSON response
 
-The documentation of the API has been moved [here](landroid-api.md).
+The documentation of the API has been moved [here](landroid-api.md). Some documentation for newer (2017) models can be
+found [here](landroid-mqtt.md).
