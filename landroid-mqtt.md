@@ -71,30 +71,56 @@ To get the binary PKCS12 certificate, this string needs to be Base64 decoded. (O
 The app will then connect to the MQTT broker,in the Android case, with the help of the [Java SDK](https://aws.amazon.com/sdk-for-java/)
 (in particular [`AWSIotMqttManager`](http://docs.aws.amazon.com/AWSAndroidSDK/latest/javadoc/com/amazonaws/mobileconnectors/iot/AWSIotMqttManager.html)).
 The server will be `a1optpg91s0ydf.iot.eu-west-1.amazonaws.com` or similar in another AWS region, depending on your country. 
-The port is 8883. The MQTT topics are named with the MAC address of the lawn mower; `DB510/MAC_ADDRESS/commandIn` and 
-`DB510/MAC_ADDRESS/commandOut` respectively.
+The port is 8883. The MQTT topics are named with the MAC address (without semi colons) of the lawn mower; 
+`DB510/MAC_ADDRESS/commandIn` and `DB510/MAC_ADDRESS/commandOut` respectively.
 
 On the `.../commandOut` topic, the mower will publish data as UTF-8 encoded JSON, supposedly looking something like this:
 ```json
-{
-  "dat": {
-    "mac": ..., // MAC address
-    "fw": ..., // Firmeware version
-    "bt": {
-      "t": ...,    
-      "v": ...,    
-      "p": ...,    
-      "nr": ...,    
-      "c": ... // Charge    
+{  
+  "cfg": { // Configuration - supposedly, this can be sent to commandIn topic to update config  
+    "lg": "it", // Language
+    "tm": "11:12:13", // Time of mowers clock
+    "dt": "22/06/2017", // Date of mowers clock
+    "sc": {  // Schedule  
+      "m": 1, // Schedule mode
+      "p": 0, // Mowing percentage
+      "d": [ // Daily schedule
+        ["10:00", 240, 1], // Start time, working time (minutes), edge cutting enabled
+        ["11:00", 300, 1],
+        ["12:00", 300, 0],
+        ["13:00", 300, 0],
+        ["14:00", 300, 1],
+        ["15:00", 180, 0], 
+        ["16:00", 405, 1]
+      ]
     },
-    "dmp": [..., ..., ...],
-    "st": {
-      "b": ..., // Blade
-      "d": ..., // Distance
-      "wt": ... // Total work time
+    "cmd": 0,
+    "mz": [0, 0, 0, 0], // Multi zone
+    "mzv": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Multi zone percentages
+    "rd": 120, // Rain delay (minutes)
+    "sn": "..." // Serial no
+  },
+  "dat": {  
+    "mac": "AABBCCDDEEFF", // MAC address of the mower
+    "fw": 2.59, // Firmeware version
+    "bt": {  
+      "t": 29.0,
+      "v": 19.79,
+      "p": 87,
+      "nr": 622,
+      "c": 0 // Charge
     },
-    "ls": ..., // Status code
-    "le": ... // Error code
-  }  
+    "dmp": [0.4, -2.5, 14.3],
+    "st": { // Statistics 
+      "b": 123, // Blade
+      "d": 456, // Distance
+      "wt": 789 // Total work time
+    },
+    "ls": 1, // Status code
+    "le": 0, // Error code
+    "lz": 0,
+    "rsi": 52,
+    "lk": 0
+  }
 }
 ```
