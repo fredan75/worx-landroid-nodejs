@@ -30,7 +30,7 @@ legal in your country) the APK of the [official Android app](https://play.google
 It also seems someone posted the token [here](https://pastebin.com/JMmVCUrf).
 
 The response will be JSON looking something like this
-```json
+```javascript
 {
   "id": 123,
   "name": "Your Name",
@@ -74,8 +74,8 @@ The server will be `a1optpg91s0ydf.iot.eu-west-1.amazonaws.com` or similar in an
 The port is 8883. The MQTT topics are named with the MAC address (without semi colons) of the lawn mower; 
 `DB510/MAC_ADDRESS/commandIn` and `DB510/MAC_ADDRESS/commandOut` respectively.
 
-On the `.../commandOut` topic, the mower will publish data as UTF-8 encoded JSON, supposedly looking something like this:
-```json
+On the `.../commandOut` topic, the mower will publish data as UTF-8 encoded JSON, looking something like this:
+```javascript
 {  
   "cfg": { // Configuration - supposedly, this can be sent to commandIn topic to update config  
     "lg": "it", // Language
