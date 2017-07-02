@@ -68,7 +68,7 @@ To get the binary PKCS12 certificate, this string needs to be Base64 decoded. (O
 
 ### Connecting to MQTT
 
-The app will then connect to the MQTT broker,in the Android case, with the help of the [Java SDK](https://aws.amazon.com/sdk-for-java/)
+The app will then connect to the MQTT broker,in the Android case, with the help of the [Android SDK](https://docs.aws.amazon.com/mobile/sdkforandroid/developerguide/)
 (in particular [`AWSIotMqttManager`](http://docs.aws.amazon.com/AWSAndroidSDK/latest/javadoc/com/amazonaws/mobileconnectors/iot/AWSIotMqttManager.html)).
 The server will be `a1optpg91s0ydf.iot.eu-west-1.amazonaws.com` or similar in another AWS region, depending on your country. 
 The port is 8883. The MQTT topics are named with the MAC address (without semi colons) of the lawn mower; 

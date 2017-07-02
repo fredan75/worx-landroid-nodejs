@@ -11,6 +11,42 @@ const pem = require("pem"); // https://github.com/Dexus/pem
 const uuidv1 = require('uuid/v1');
 // var request = require('request'); // https://github.com/request/request
 
+const STATUS_CODE_HOME = 1;
+const STATUS_MESSAGES = [];
+STATUS_MESSAGES[0] = "Idle";
+STATUS_MESSAGES[STATUS_CODE_HOME] = "Home"; // Combine with charge code and error code
+STATUS_MESSAGES[2] = "Start sequence";
+STATUS_MESSAGES[3] = "Leaving home";
+STATUS_MESSAGES[4] = "Follow wire";
+STATUS_MESSAGES[5] = "Searching home";
+STATUS_MESSAGES[6] = "Searching wire";
+STATUS_MESSAGES[7] = "Mowing";
+STATUS_MESSAGES[8] = "Lifted";
+STATUS_MESSAGES[9] = "Trapped";
+STATUS_MESSAGES[10] = "Blade blocked";
+STATUS_MESSAGES[11] = "Debug";
+STATUS_MESSAGES[12] = "Remote control";
+
+const ERROR_CODE_RAINING = 5;
+const ERROR_MESSAGE = [];
+ERROR_MESSAGE[0] = null;
+ERROR_MESSAGE[1] = "Trapped";
+ERROR_MESSAGE[2] = "Lifted";
+ERROR_MESSAGE[3] = "Wire missing";
+ERROR_MESSAGE[4] = "Outside wire";
+ERROR_MESSAGE[ERROR_CODE_RAINING] = "Raining";
+ERROR_MESSAGE[6] = "Close door to mow";
+ERROR_MESSAGE[7] = "Close door to go home";
+ERROR_MESSAGE[8] = "Blade motor blocked";
+ERROR_MESSAGE[9] = "Wheel motor blocked";
+ERROR_MESSAGE[10] = "Trapped timeout"; // Not sure what this is
+ERROR_MESSAGE[11] = "Upside down";
+ERROR_MESSAGE[12] = "Battery low";
+ERROR_MESSAGE[13] = "Reverse wire";
+ERROR_MESSAGE[14] = "Charge error";
+ERROR_MESSAGE[15] = "Timeout finding home";  // Not sure what this is
+
+
 function LandroidCloud(config) {
   this.email = config.email;
   this.password = config.password;
@@ -27,7 +63,8 @@ LandroidCloud.prototype.setToken = function (token) {
 };
 
 /** Perform all initialization needed for connecting to the MQTT topic */
-LandroidCloud.prototype.init = function () {
+LandroidCloud.prototype.init = function (updateListener) {
+  this.updateListener = updateListener;
   this.retrieveGuestToken();
 };
 
@@ -86,7 +123,11 @@ LandroidCloud.prototype.retrieveCertificate = function () {
 };
 
 /** Load certificate and private key from file or buffer */
-LandroidCloud.prototype.setCertificate = function (pkcs12) {
+LandroidCloud.prototype.setCertificate = function (pkcs12, updateListener) {
+  if(updateListener) {
+    this.updateListener = updateListener;
+  }
+  
   var self = this;
   
   pem.readPkcs12(pkcs12, { }, function(err, cert, ca) {
@@ -141,7 +182,39 @@ LandroidCloud.prototype.connectToMQTT = function () {
 
 /** New MQTT message received */
 LandroidCloud.prototype.onMessage = function (payload) {
-  console.log('MQTT message received', payload.toString()); // TODO
+  var data = payload.dat;
+  if(data) {
+    console.log('MQTT message received: ' + data.toString()); // TODO Remove
+
+    status = {
+      state: null,
+      errorMessage: null,
+
+      batteryPercentage: null,
+      totalMowingHours: null,
+      noOfAlarms: null
+    };
+    
+    if(data.ls && data.ls === STATUS_CODE_HOME && data.le && data.le === ERROR_CODE_RAINING) { // Special case
+      status.state = "Rain delay";
+      status.errorMessage = null;
+    }
+    else { // Normal case
+      status.state = (data.ls && data.ls >= 0 && data.ls < STATUS_MESSAGES.length) ?
+          STATUS_MESSAGES[data.ls] : "Unknown";
+      status.errorMessage = (data.le && data.le > 0 && data.le < ERROR_MESSAGE.length) ?
+          ERROR_MESSAGE[data.le] :
+          "Unknown error";
+    }
+    status.batteryPercentage = (data.bt && data.bt.c) ? data.bt.c : 0; // Does not seem to work  
+    status.totalMowingHours = data.st ? data.st.wt : null; // TODO What unit? 0,1 h?
+    
+    console.log("Landroid status: " + JSON.stringify(status));
+    
+    if(this.updateListener) {
+      this.updateListener(status);
+    }
+  }
 };
 
 /** Call API at https://api.worxlandroid.com/api/v1/ */
