@@ -82,7 +82,7 @@ English explanation is inlined as comments.
         0, // "stop"
         0, // "charging completed"
         0, // "manual stop"
-        0, // "going home"
+        0, // "going home", "searching for zone" (following wire)
         0,
         0,
         0,

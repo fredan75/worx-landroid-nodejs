@@ -1,5 +1,8 @@
 var config = require('./config'); // Read configuration
 const LandroidCloud = require("./landroid-cloud");
+const HomeAssistant = require('./home-assistant');
+
+const homeAssistant = new HomeAssistant(config);
 
 var updateListener = function (status) {
   if(status) { // We got some data from the Landroid

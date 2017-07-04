@@ -169,6 +169,14 @@ LandroidCloud.prototype.connectToMQTT = function () {
         });
         
         device.on('message', function(topic, payload) {
+          if(Buffer.isBuffer(payload)) {
+            payload = payload.toString('utf8');
+          }
+          
+          if(typeof payload === 'string' || payload instanceof String) {
+            payload = JSON.parse(payload);
+          }
+
           self.onMessage(payload);
         });
       
@@ -184,7 +192,7 @@ LandroidCloud.prototype.connectToMQTT = function () {
 LandroidCloud.prototype.onMessage = function (payload) {
   var data = payload.dat;
   if(data) {
-    console.log('MQTT message received: ' + data.toString()); // TODO Remove
+    // console.log('MQTT message received: ' + JSON.stringify(data));
 
     status = {
       state: null,
@@ -206,8 +214,8 @@ LandroidCloud.prototype.onMessage = function (payload) {
           ERROR_MESSAGE[data.le] :
           "Unknown error";
     }
-    status.batteryPercentage = (data.bt && data.bt.c) ? data.bt.c : 0; // Does not seem to work  
-    status.totalMowingHours = data.st ? data.st.wt : null; // TODO What unit? 0,1 h?
+    // status.batteryPercentage = (data.bt && data.bt.c) ? data.bt.c : 0; // Does not seem to work  
+    status.totalMowingHours = data.st && data.st.wt ? data.st.wt/60 : null; // Minutes
     
     console.log("Landroid status: " + JSON.stringify(status));
     
@@ -215,6 +223,8 @@ LandroidCloud.prototype.onMessage = function (payload) {
       this.updateListener(status);
     }
   }
+  else
+    console.log("No 'dat' in message payload! " + JSON.stringify(payload));
 };
 
 /** Call API at https://api.worxlandroid.com/api/v1/ */

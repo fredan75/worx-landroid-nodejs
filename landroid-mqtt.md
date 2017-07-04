@@ -108,13 +108,13 @@ On the `.../commandOut` topic, the mower will publish data as UTF-8 encoded JSON
       "v": 19.79,
       "p": 87,
       "nr": 622,
-      "c": 0 // Charge
+      "c": 0 // Charging, 1 = yes, 0 = no
     },
     "dmp": [0.4, -2.5, 14.3],
     "st": { // Statistics 
       "b": 123, // Blade
-      "d": 456, // Distance
-      "wt": 789 // Total work time
+      "d": 456, // Distance (meters)
+      "wt": 789 // Total work time (minutes)
     },
     "ls": 1, // Status code
     "le": 0, // Error code
