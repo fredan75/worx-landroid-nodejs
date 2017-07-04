@@ -51,7 +51,7 @@ function LandroidCloud(config) {
   this.email = config.email;
   this.password = config.password;
   this.macAddress = config.macAddress ? 
-    config.macAddress.toUpperCase().replace(':', '') : null;
+    config.macAddress.toUpperCase().replace(/\:/g, '') : null;
 
   this.uuid = uuidv1();
   console.log("UUID: " + this.uuid);
