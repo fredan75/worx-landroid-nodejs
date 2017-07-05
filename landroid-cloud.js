@@ -14,7 +14,7 @@ const uuidv1 = require('uuid/v1');
 const STATUS_CODE_HOME = 1;
 const STATUS_MESSAGES = [];
 STATUS_MESSAGES[0] = "Idle";
-STATUS_MESSAGES[STATUS_CODE_HOME] = "Home"; // Combine with charge code and error code
+STATUS_MESSAGES[STATUS_CODE_HOME] = "Home"; // Combine with charge code and error code TODO Charge code
 STATUS_MESSAGES[2] = "Start sequence";
 STATUS_MESSAGES[3] = "Leaving home";
 STATUS_MESSAGES[4] = "Follow wire";
@@ -210,12 +210,15 @@ LandroidCloud.prototype.onMessage = function (payload) {
     else { // Normal case
       status.state = (data.ls && data.ls >= 0 && data.ls < STATUS_MESSAGES.length) ?
           STATUS_MESSAGES[data.ls] : "Unknown";
-      status.errorMessage = (data.le && data.le > 0 && data.le < ERROR_MESSAGE.length) ?
-          ERROR_MESSAGE[data.le] :
+      status.errorMessage = (data.le && data.le < ERROR_MESSAGE.length) ?
+          (data.le > 0 ? ERROR_MESSAGE[data.le] : null) :
           "Unknown error";
+      status.noOfAlarms = status.errorMessage ? 1 : 0;
     }
     // status.batteryPercentage = (data.bt && data.bt.c) ? data.bt.c : 0; // Does not seem to work  
-    status.totalMowingHours = data.st && data.st.wt ? data.st.wt/60 : null; // Minutes
+    status.totalMowingHours = data.st && data.st.wt ? 
+        Math.round(data.st.wt/6) / 10 : // Minutes 
+        null; 
     
     console.log("Landroid status: " + JSON.stringify(status));
     

@@ -8,7 +8,7 @@ var updateListener = function (status) {
   if(status) { // We got some data from the Landroid
     // Send data to Home Assistant
     homeAssistant.setState(status.errorMessage ? status.errorMessage : status.state);
-    homeAssistant.setNoOfAlarms(status.errorMessage ? 1 : 0); // Can be used for triggers
+    homeAssistant.setNoOfAlarms(status.noOfAlarms); // Can be used for triggers
     // homeAssistant.setBatteryPercentage(status.batteryPercentage);
     homeAssistant.setTotalMowingHours(status.totalMowingHours);
   }
