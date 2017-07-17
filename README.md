@@ -43,7 +43,12 @@ If you plan to use [Domoticz home automation system](http://domoticz.com/), foll
   1. Note that on Windows you may need to install OpenSSL, see http://git.eclipse.org/c/mosquitto/org.eclipse.mosquitto.git/tree/readme-windows.txt
      linking to the URL in the OpenSSL section below.
 2. Install [Domoticz](http://domoticz.com/) on some supported hardware (PC, Raspberry Pi, ...). 
-3. Start sending Landroid (2015-2016) data to Domoticz by running `landroid2domoticz.bat` 
+3. To start sending Landroid information to Domoticz:
+ * 2015-2016 models: Run `landroid2domoticz.bat`
+ * 2017 models:
+    * Make sure you have OpenSSL installed (see below), either on your `PATH` or with the environment variable 
+      `OPENSSL_BIN` pointing to the executable.
+    * Run `landroid-cloud2domoticz.bat`.
 4. Use your browser and navigate to _Utility_ in the Domoticz UI.
 
 ## Worx Landroid REST API JSON response
