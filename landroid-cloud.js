@@ -113,7 +113,13 @@ LandroidCloud.prototype.retrieveCertificate = function () {
   this.callApi("GET", "users/certificate", null, function (data) {
     if(data.pkcs12) {
       console.log("Certificate retrieved");
-      self.setCertificate(Buffer.from(data.pkcs12, 'base64'));
+      var decoded;
+      if (typeof Buffer.from === "function") { // Node 6.0+
+        decoded = Buffer.from(data.pkcs12, 'base64');
+      } else {
+        decoded = new Buffer(data.pkcs12, 'base64');
+      }      
+      self.setCertificate(decoded);
     }
     else {
       throw new Error("Unexpected response: " + JSON.stringify(data));
