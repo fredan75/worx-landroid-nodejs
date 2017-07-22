@@ -214,9 +214,9 @@ LandroidCloud.prototype.onMessage = function (payload) {
       status.errorMessage = null;
     }
     else { // Normal case
-      status.state = (data.ls && data.ls >= 0 && data.ls < STATUS_MESSAGES.length) ?
+      status.state = ("ls" in data && data.ls >= 0 && data.ls < STATUS_MESSAGES.length) ?
           STATUS_MESSAGES[data.ls] : "Unknown";
-      status.errorMessage = (data.le && data.le < ERROR_MESSAGE.length) ?
+      status.errorMessage = ("le" in data && data.le >= 0 && data.le < ERROR_MESSAGE.length) ?
           (data.le > 0 ? ERROR_MESSAGE[data.le] : null) :
           "Unknown error";
       status.noOfAlarms = status.errorMessage ? 1 : 0;
