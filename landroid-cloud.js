@@ -206,6 +206,7 @@ LandroidCloud.prototype.onMessage = function (payload) {
 
       batteryPercentage: null,
       totalMowingHours: null,
+      totalDistance: null,
       noOfAlarms: null
     };
     
@@ -225,6 +226,7 @@ LandroidCloud.prototype.onMessage = function (payload) {
     status.totalMowingHours = data.st && data.st.wt ? 
         Math.round(data.st.wt/6) / 10 : // Minutes 
         null; 
+    status.totalDistance = data.st && data.st.d ? data.st.d : null;
     
     console.log("Landroid status: " + JSON.stringify(status));
     
