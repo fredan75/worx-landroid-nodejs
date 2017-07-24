@@ -16,7 +16,7 @@ var TOTAL_MOWING_HOURS_ENTITY_ID = new Entity("total_mowing_hours", "Total mowin
 var NO_OF_ALARMS_ENTITY_ID = new Entity("no_of_alarms", "No of alarms", "#");
 // var ALERT_ENTITY_ID = new Entity("Alert";
 var STATE_ENTITY_ID = new Entity("state", "State");
-
+var TOTAL_DISTANCE_ENTITY_ID = new Entity("total_distance", "Total distance", "m");
 
 function HomeAssistant(config) {
   this.homeAssistantUrl = config.homeAssistantUrl;
@@ -67,6 +67,11 @@ HomeAssistant.prototype.setBatteryPercentage = function(batteryPercentage) {
 HomeAssistant.prototype.setTotalMowingHours = function(totalMowingHours) {
   if(typeof totalMowingHours != "undefined")
     this.postState(TOTAL_MOWING_HOURS_ENTITY_ID, totalMowingHours);
+};
+
+HomeAssistant.prototype.setTotalDistance = function(totalDistance) {
+  if(typeof totalDistance != "undefined")
+    this.postState(TOTAL_DISTANCE_ENTITY_ID, totalDistance);
 };
 
 HomeAssistant.prototype.setNoOfAlarms = function(noOfAlarms) {

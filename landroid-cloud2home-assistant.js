@@ -10,6 +10,7 @@ var updateListener = function (status) {
     homeAssistant.setState(status.errorMessage ? status.errorMessage : status.state);
     homeAssistant.setNoOfAlarms(status.noOfAlarms); // Can be used for triggers
     // homeAssistant.setBatteryPercentage(status.batteryPercentage);
+    homeAssistant.setTotalDistance(status.totalDistance);
     homeAssistant.setTotalMowingHours(status.totalMowingHours);
   }
   else {
