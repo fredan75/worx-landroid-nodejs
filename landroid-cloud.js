@@ -165,7 +165,7 @@ LandroidCloud.prototype.connectToMQTT = function () {
         console.log("Connecting to MQTT broker");
       
         var device = awsIot.device({
-          host: 'a1optpg91s0ydf.iot.eu-west-1.amazonaws.com',
+          host: 'a1optpg91s0ydf-2.iot.eu-west-1.amazonaws.com',
           clientCert: Buffer.from(self.cert),
           privateKey: Buffer.from(self.key),
           // passphrase: "",
