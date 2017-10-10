@@ -1,6 +1,9 @@
 var config = require('./config'); // Read configuration
+var env = require('./env');
 const LandroidCloud = require("./landroid-cloud");
 const HomeAssistant = require('./home-assistant');
+
+config = env.override(config); // Override config with environment variables
 
 const homeAssistant = new HomeAssistant(config);
 

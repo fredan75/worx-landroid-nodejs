@@ -1,9 +1,12 @@
 var config = require('./config'); // Read configuration
+var env = require('./env');
 
 // Import project modules
 var Landroid = require('./landroid');
 var LandroidState = Landroid.LandroidState;
 var HomeAssistant = require('./home-assistant');
+
+config = env.override(config); // Override config with environment variables
 
 var homeAssistant = new HomeAssistant(config);
 
