@@ -204,6 +204,7 @@ LandroidCloud.prototype.onMessage = function (payload) {
       state: null,
       errorMessage: null,
 
+      batteryPercentage: null,
       totalMowingHours: null,
       totalDistance: null,
       noOfAlarms: null
