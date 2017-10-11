@@ -71,7 +71,7 @@ LandroidCloud.prototype.init = function (updateListener) {
 /** Retrieve hard coded guest token from Pastebin */
 LandroidCloud.prototype.retrieveGuestToken = function () {
   var self = this;
-  getUrlBody('https://pastebin.com/raw/JMmVCUrf', function (body) {
+  getUrlBody('https://pastebin.com/raw/xD6ZPULZ', function (body) {
     console.log("Downloaded guest token");
     self.setToken(body);
     

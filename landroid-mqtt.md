@@ -27,7 +27,7 @@ First it needs to log in to get an auth token. It does so by `POST`ing form data
 In addition to these, there must be an `X-Auth-Token` HTTP header with a "guest token" (similar to client ID in OAuth2 
 Client Credentials). You can get this for example by sniffing the network traffic or reverse engineering (assuming that is 
 legal in your country) the APK of the [official Android app](https://play.google.com/store/apps/details?id=it.vt100.landroid).
-It also seems someone posted the token [here](https://pastebin.com/JMmVCUrf).
+It also seems someone posted the token [here](https://pastebin.com/xD6ZPULZ).
 
 The response will be JSON looking something like this
 ```javascript
