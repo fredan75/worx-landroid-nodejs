@@ -14,7 +14,7 @@ const uuidv1 = require('uuid/v1');
 const STATUS_CODE_HOME = 1;
 const STATUS_MESSAGES = [];
 STATUS_MESSAGES[0] = "Idle";
-STATUS_MESSAGES[STATUS_CODE_HOME] = "Home"; // Combine with charge code and error code TODO Charge code
+STATUS_MESSAGES[STATUS_CODE_HOME] = "Home"; // Combine with charge code and error code
 STATUS_MESSAGES[2] = "Start sequence";
 STATUS_MESSAGES[3] = "Leaving home";
 STATUS_MESSAGES[4] = "Follow wire";
@@ -214,6 +214,11 @@ LandroidCloud.prototype.onMessage = function (payload) {
       status.state = "Rain delay";
       status.errorMessage = null;
     }
+    else if("ls" in data && data.ls === STATUS_CODE_HOME &&
+            "bt" in data && "c" in data.bt && data.bt.c == 1) {
+      status.state = "Charging";
+      status.errorMessage = null;
+    }
     else { // Normal case
       status.state = ("ls" in data && data.ls >= 0 && data.ls < STATUS_MESSAGES.length) ?
           STATUS_MESSAGES[data.ls] : "Unknown";
@@ -222,7 +227,7 @@ LandroidCloud.prototype.onMessage = function (payload) {
           "Unknown error";
       status.noOfAlarms = status.errorMessage ? 1 : 0;
     }
-    // status.batteryPercentage = (data.bt && data.bt.c) ? data.bt.c : 0; // Does not seem to work  
+    status.batteryPercentage = ("bt" in data && "p" in data.bt) ? data.bt.p : 0;
     status.totalMowingHours = data.st && data.st.wt ? 
         Math.round(data.st.wt/6) / 10 : // Minutes 
         null; 
