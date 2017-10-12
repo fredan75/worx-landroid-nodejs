@@ -62,9 +62,9 @@ LandroidCloud.prototype.setToken = function (token) {
   console.log("API token set to " + this.token);
 };
 
-LandroidCloud.prototype.setMQTTendpoint = function (endpoint) {
-  this.mqtt_endpoint = endpoint;
-  console.log("MQTT endpoint set to " + this.mqtt_endpoint);
+LandroidCloud.prototype.setMQTTEndpoint = function (endpoint) {
+  this.MQTTEndpoint = endpoint;
+  console.log("MQTT endpoint set to " + this.MQTTEndpoint);
 };
 
 /** Perform all initialization needed for connecting to the MQTT topic */
@@ -167,10 +167,10 @@ LandroidCloud.prototype.connectToMQTT = function () {
   getUrlBody("https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem", 
       function (ca) {
     
-        console.log("Connecting to MQTT broker");
+        console.log("Connecting to MQTT broker " + self.MQTTEndpoint);
       
         var device = awsIot.device({
-          host: self.mqtt_endpoint,
+          host: self.MQTTEndpoint,
           clientCert: Buffer.from(self.cert),
           privateKey: Buffer.from(self.key),
           // passphrase: "",
