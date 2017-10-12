@@ -99,7 +99,7 @@ LandroidCloud.prototype.retrieveUserToken = function () {
         if(data.api_token) {
           console.log("Logged in as " + self.email + " - user token retrieved from API");
           self.setToken(data.api_token);
-          self.setMQTTendpoint(data.mqtt_endpoint);
+          self.setMQTTEndpoint(data.mqtt_endpoint);
           self.retrieveCertificate();
         }
         else {
