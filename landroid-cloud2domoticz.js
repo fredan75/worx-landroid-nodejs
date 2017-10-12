@@ -56,7 +56,7 @@ var updateListener = function (status) {
 
     // Send data to Domoticz
     domoticz.setNoOfAlarms(status.noOfAlarms);
-    // domoticz.setBatteryPercentage(status.batteryPercentage);
+    domoticz.setBatteryPercentage(status.batteryPercentage);
     domoticz.setTotalMowingHours(status.totalMowingHours);
 
   }
