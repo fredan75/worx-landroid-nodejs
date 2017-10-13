@@ -1,5 +1,9 @@
 var config = require('./config'); // Read configuration
+var env = require('./env');
 const LandroidCloud = require("./landroid-cloud");
+
+config = env.override(config); // Override config with environment variables
+
 var landroid = new LandroidCloud(config);
 
 const Domoticz = require('./domoticz');
