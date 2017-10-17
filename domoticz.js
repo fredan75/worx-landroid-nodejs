@@ -75,7 +75,7 @@ Domoticz.prototype.sendValue = function(name, svalue, nvalue) {
   var message = {
     "idx": idx,
     "nvalue": nvalue ? nvalue : 0,
-    "svalue": (typeof svalue != "undefined") ? svalue.toString() : ""
+    "svalue": (typeof svalue != "undefined" && svalue != null) ? svalue.toString() : ""
   };
 
   this.client.publish('domoticz/in', JSON.stringify(message), /* mqttOpts, */ function () {
