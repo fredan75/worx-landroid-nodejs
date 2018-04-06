@@ -124,6 +124,7 @@ function alertArrayToMessage(arr) {
   if(arr && arr.length > 0) {
     for(var i = 0; i < arr.length; i++) {
       if(arr[i] && i != WIRE_BOUNCED_ALARM_INDEX) { // There was an alert (ignore wire bounce)
+        output += " [" + i.toString(); 
         var errorMessage = ERROR_MESSAGES[i];
         if(errorMessage) {
           if(output) { // Not first error (empty string is falsy) - insert delimiter
