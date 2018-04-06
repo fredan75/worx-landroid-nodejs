@@ -3,10 +3,11 @@
 module.exports = {
   
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Landroid settings - these must be set correctly regardless of home automation system
+  // "Old" Landroid settings - these must be set correctly regardless of home automation system, if you have a Landroid
+  // 2015 or 2016 model whose app communicates directly with the mower
   
   /** The PIN code to your Landroid */
-  pinCode: "YOUR PIN CODE", // <---- MUST ALWAYS BE EDITED!!!
+  pinCode: "YOUR PIN CODE", // <---- MUST BE EDITED!!!
   
   /** 
    * The URL where your Worx Landroid is accessible by a web browser. Examples: "https://192.168.0.5", "http://mylandroid.dynamic-ip-provider:8080"
@@ -14,6 +15,19 @@ module.exports = {
    * this application and the Landroid are on the same network. (NOTE! No '/' at the end)
    */
   landroidUrl: "http://Landroid",
+  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // "New" Landroid settings - these must be set correctly regardless of home automation system, if you have a Landroid
+  // 2017 model whose app communicates with the mower via a cloud service
+  
+  /** The e-mail address of the account that you use in the app */
+  email: "your@email.com", // <---- MUST BE EDITED!!!
+  
+  /** The password of the account that you use in the app */
+  password: "Your_password", // <---- MUST BE EDITED!!!
+  
+  /** The MAC address of your mower. (Uppercase/lowercase is irrelevant; colon may be used as separator) */
+  macAddress: "AA:BB:CC:DD:EE:FF",
   
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Settings needed if you plan to use Domoticz

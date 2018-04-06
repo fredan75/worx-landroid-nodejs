@@ -16,8 +16,8 @@ var TOTAL_MOWING_HOURS_ENTITY_ID = new Entity("total_mowing_hours", "Total mowin
 var NO_OF_ALARMS_ENTITY_ID = new Entity("no_of_alarms", "No of alarms", "#");
 // var ALERT_ENTITY_ID = new Entity("Alert";
 var STATE_ENTITY_ID = new Entity("state", "State");
+var TOTAL_DISTANCE_ENTITY_ID = new Entity("total_distance", "Total distance", "m");
 var WORKING_TIME_PERCENT_ID = new Entity("working_time_percent", "Working time Percent", "%");
-
 
 function HomeAssistant(config) {
   this.homeAssistantUrl = config.homeAssistantUrl;
@@ -36,6 +36,9 @@ HomeAssistant.prototype.ajax = function (type, uri, data, callback) {
     url: url + "?api_password=" + self.homeAssistantPassword,
     type: type,
     data: data, // ? JSON.stringify(data) : null,
+    headers: {
+      "X-HA-Access": self.homeAssistantPassword
+    },
     contentType: "json", // will be "application/json" in version najax 0.2.0
     dataType: "json", // will be "application/json" in version najax 0.2.0
     success: function(response) {
@@ -67,6 +70,11 @@ HomeAssistant.prototype.setBatteryPercentage = function(batteryPercentage) {
 HomeAssistant.prototype.setTotalMowingHours = function(totalMowingHours) {
   if(typeof totalMowingHours != "undefined")
     this.postState(TOTAL_MOWING_HOURS_ENTITY_ID, totalMowingHours);
+};
+
+HomeAssistant.prototype.setTotalDistance = function(totalDistance) {
+  if(typeof totalDistance != "undefined")
+    this.postState(TOTAL_DISTANCE_ENTITY_ID, totalDistance);
 };
 
 HomeAssistant.prototype.setNoOfAlarms = function(noOfAlarms) {

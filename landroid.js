@@ -126,8 +126,12 @@ function alertArrayToMessage(arr) {
       if(arr[i] && i != WIRE_BOUNCED_ALARM_INDEX) { // There was an alert (ignore wire bounce)
         output += " [" + i.toString(); 
         var errorMessage = ERROR_MESSAGES[i];
-        if(errorMessage) output += "-" + errorMessage;
-        output += "]";
+        if(errorMessage) {
+          if(output) { // Not first error (empty string is falsy) - insert delimiter
+            output += "; ";
+          }
+          output += errorMessage;
+        }
       }
     }
   }
